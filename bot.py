@@ -1,4 +1,5 @@
 import os
+from keep_alive import keep_alive
 import discord
 from discord.ext import commands
 from google import genai
@@ -60,6 +61,7 @@ async def on_message(message):
 
     # จำเป็นต้องมีบรรทัดนี้ เพื่อให้บอทยังรับคำสั่ง (Commands) อื่นๆ ได้ปกติ
     await bot.process_commands(message)
-
+# เรียกใช้เว็บจำลอง
+keep_alive()
 # สั่งเดินเครื่องบอท!
 bot.run(DISCORD_TOKEN)
