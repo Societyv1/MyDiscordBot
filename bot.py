@@ -1,3 +1,4 @@
+import random
 import asyncio
 import os
 from keep_alive import keep_alive
@@ -104,6 +105,22 @@ async def drag(ctx, member: discord.Member, times: int = 3):
         await ctx.send("❌ บอทไม่มีสิทธิ์ดึงคนอะเตอร์! ต้องไปให้ยศบอทเปิดสิทธิ์ 'Move Members' (ย้ายสมาชิก) ก่อนนะ")
     except Exception as e:
         await ctx.send("มีบางอย่างผิดพลาด อาจจะดึงเร็วไปหรือเพื่อนหนีออกห้องไปแล้ว")
+  
+@bot.command(aliases=['valo', 'สุ่มตัว'])
+async def random_agent(ctx):
+    # รายชื่อตัวละคร Valorant ทั้ง 29 ตัว
+    agents = [
+        "Jett", "Raze", "Phoenix", "Reyna", "Yoru", "Neon", "Iso", "Waylay", 
+        "Sova", "Breach", "Skye", "KAY/O", "Fade", "Gekko", "Tejo", 
+        "Brimstone", "Omen", "Viper", "Astra", "Harbor", "Clove", "Veto", 
+        "Sage", "Cypher", "Killjoy", "Chamber", "Deadlock", "Vyse", "Miks"
+    ]
+    
+    # สุ่มเลือกมา 1 ตัว
+    chosen = random.choice(agents)
+    
+    # ส่งข้อความพร้อมแท็กชื่อคนสุ่ม
+    await ctx.send(f"🎲 {ctx.author.mention} สวรรค์ประทานพรให้ตาหน้าคุณต้องเล่น: **{chosen}** 🔫 (ห้ามงอแงนะ!)")
 
 # เรียกใช้เว็บจำลอง
 keep_alive()
