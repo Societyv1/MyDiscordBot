@@ -14,9 +14,10 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 # ตั้งค่าให้เชื่อมต่อกับสมอง Gemini AI (ใช้ระบบตัวใหม่ล่าสุด)
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-# ตั้งค่าบอท Discord และเปิดสิทธิ์การอ่านข้อความ
+# ตั้งค่าบอท Discord และเปิดสิทธิ์การอ่านข้อความ/เห็นสมาชิก
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True # เปิดตาวิเศษให้บอทมองเห็นคนในเซิร์ฟเวอร์
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
@@ -43,7 +44,7 @@ async def on_message(message):
             try:
                 # โยนคำถามไปให้ Gemini ตอบ (รูปแบบโค้ดเวอร์ชันใหม่)
                 response = client.models.generate_content(
-                    model='gemini-3.5-flash',
+                    model='gemini-1.5-flash', # แนะนำให้ใช้ 1.5-flash เพราะ 3.5 ยังไม่มีนะ!
                     contents=user_prompt,
                 )
                 reply_text = response.text
@@ -62,8 +63,15 @@ async def on_message(message):
 
     # จำเป็นต้องมีบรรทัดนี้ เพื่อให้บอทยังรับคำสั่ง (Commands) อื่นๆ ได้ปกติ
     await bot.process_commands(message)
+
 @bot.command()
 async def drag(ctx, member: discord.Member, times: int = 3):
+    # --- โค้ดใหม่: จำกัดจำนวนรอบสูงสุดที่ 20 รอบ ---
+    if times > 20:
+        await ctx.send("เยอะไป! เดี๋ยวบอทบิน ขอจำกัดไว้ที่ 20 รอบละกันนะ 🤣")
+        times = 20 
+    # ---------------------------------------------
+
     # 1. เช็คว่าคนที่โดนแท็กอยู่ในห้องเสียงมั้ย
     if not member.voice or not member.voice.channel:
         await ctx.send(f"จะดึงยังไงล่ะ! {member.display_name} ไม่ได้อยู่ในห้องเสียงสักหน่อย 😅")
@@ -96,6 +104,7 @@ async def drag(ctx, member: discord.Member, times: int = 3):
         await ctx.send("❌ บอทไม่มีสิทธิ์ดึงคนอะเตอร์! ต้องไปให้ยศบอทเปิดสิทธิ์ 'Move Members' (ย้ายสมาชิก) ก่อนนะ")
     except Exception as e:
         await ctx.send("มีบางอย่างผิดพลาด อาจจะดึงเร็วไปหรือเพื่อนหนีออกห้องไปแล้ว")
+
 # เรียกใช้เว็บจำลอง
 keep_alive()
 # สั่งเดินเครื่องบอท!
