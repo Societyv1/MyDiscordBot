@@ -45,7 +45,7 @@ async def on_message(message):
             try:
                 # โยนคำถามไปให้ Gemini ตอบ (รูปแบบโค้ดเวอร์ชันใหม่)
                 response = client.models.generate_content(
-                    model='gemini-1.5-flash', # แนะนำให้ใช้ 1.5-flash เพราะ 3.5 ยังไม่มีนะ!
+                    model='gemini-3.5-flash', # แนะนำให้ใช้ 1.5-flash เพราะ 3.5 ยังไม่มีนะ!
                     contents=user_prompt,
                 )
                 reply_text = response.text
