@@ -60,7 +60,7 @@ async def on_message(message):
 
             except Exception as e:
                 print(f"Error: {e}")
-                await message.reply("ขออภัยครับ ระบบ AI เกิดข้อผิดพลาดเล็กน้อย ลองถามใหม่อีกรอบนะครับ 😅")
+                await message.reply(f"พังครับพี่เตอร์! สาเหตุคือ: `{e}`")
 
     # จำเป็นต้องมีบรรทัดนี้ เพื่อให้บอทยังรับคำสั่ง (Commands) อื่นๆ ได้ปกติ
     await bot.process_commands(message)
